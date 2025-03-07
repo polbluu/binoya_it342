@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome to Contact Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+   @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
+   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+
+
+:root {
+  --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --secondary-gradient: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+  --accent-gradient: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  --card-bg: rgba(30, 41, 59, 0.7);
+  --surface-bg: rgba(15, 23, 42, 0.7);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --border-light: rgba(255, 255, 255, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Outfit", sans-serif;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(189, 224, 180, 0.3) 0%, transparent 40%), /* Light Matcha Green */
+    radial-gradient(circle at 80% 80%, rgba(152, 191, 171, 0.3) 0%, transparent 40%), /* Muted Teal */
+    radial-gradient(circle at 50% 50%, rgba(245, 234, 200, 0.2) 0%, transparent 40%), /* Soft Beige */
+    radial-gradient(circle at 70% 30%, rgba(245, 222, 179, 0.2) 0%, transparent 40%), /* Pastel Yellow */
+    var(--bg-gradient);
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Animated particles */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.1) 0%, transparent 0.5%),
+    radial-gradient(circle at 80% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 0.5%),
+    radial-gradient(circle at 20% 60%, rgba(255, 255, 255, 0.06) 0%, transparent 0.5%),
+    radial-gradient(circle at 70% 80%, rgba(255, 255, 255, 0.09) 0%, transparent 0.5%),
+    radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.07) 0%, transparent 0.5%),
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 0.5%),
+    radial-gradient(circle at 90% 40%, rgba(255, 255, 255, 0.08) 0%, transparent 0.5%),
+    radial-gradient(circle at 40% 50%, rgba(255, 255, 255, 0.06) 0%, transparent 0.5%);
+  background-size: 150% 150%;
+  animation: moveParticles 15s ease infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes moveParticles {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.container {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(30, 41, 59, 0.5); /* Semi-transparent for glass effect */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  box-shadow: 
+        0 0 10px rgba(167, 215, 197, 0.6), 
+        0 0 20px rgba(200, 255, 200, 0.4),
+        0 0 30px rgba(100, 255, 150, 0.2);
+  animation: fadeIn 0.5s ease, glowPulse 3s infinite alternate ease-in-out;
+  max-width: 750px;
+  width: 90%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+/* Subtle pulsating glow effect */
+@keyframes glowPulse {
+    from {
+        box-shadow: 
+            0 0 15px rgba(167, 215, 197, 0.7), 
+            0 0 25px rgba(200, 255, 200, 0.5),
+            0 0 35px rgba(100, 255, 150, 0.3);
+    }
+    to {
+        box-shadow: 
+            0 0 20px rgba(167, 215, 197, 1), 
+            0 0 30px rgba(200, 255, 200, 0.6),
+            0 0 50px rgba(100, 255, 150, 0.4);
+    }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container glow effect */
+.container::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle at center, rgba(124, 58, 237, 0.05) 0%, transparent 70%);
+  transform: rotate(25deg);
+  pointer-events: none;
+  z-index: -1;
+}
+/* Subtle grid pattern */
+.container::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  position: relative;
+}
+
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.5), transparent);
+}
+
+.user-info {
+  text-align: left;
+  position: relative;
+  padding-left: 15px;
+}
+
+.user-info::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+.user-name {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.user-role {
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.logout-button {
+  padding: 0.6rem 1.6rem;
+  background: var(--accent-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.logout-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 63, 94, 0.4);
+}
+
+.logout-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s;
+}
+
+.logout-button:hover::before {
+  left: 100%;
+}
+
+.main-content {
+  margin: 3rem 0;
+  position: relative;
+}
+
+h1 {
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  font-size: 2.75rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #f8fafc, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  display: inline-block;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  height: 4px;
+  background: var(--primary-gradient);
+  border-radius: 2px;
+}
+
+p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-banner {
+            background: linear-gradient(45deg, #0061a8, #00458a);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 97, 168, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+    
+        .contact-banner:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 97, 168, 0.6);
+        }
+    
+        .contact-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+    
+        .contact-banner p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1.5rem;
+        }
+    
+        .contact-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            color: #0061a8;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+    
+        .contact-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+    
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 2.5rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+/* Card top highlight */
+.feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--secondary-gradient);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+}
+
+/* Card background pattern */
+.feature-card::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0H100V100H0V0Z' fill='none'/%3E%3Cpath d='M100 0H0V100' stroke='rgba(255, 255, 255, 0.05)' stroke-width='1'/%3E%3Cpath d='M0 100H100V0' stroke='rgba(255, 255, 255, 0.05)' stroke-width='1'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  transform: translate(30%, 30%);
+  pointer-events: none;
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--secondary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  position: relative;
+}
+
+/* Icon glow effect */
+.feature-icon::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+.feature-card:hover .feature-icon::after {
+  opacity: 0.7;
+}
+
+.feature-title {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.feature-description {
+  color: var(--text-tertiary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 58, 237, 0.7);
+}
+
+/* Animation for feature cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feature-card:nth-child(1) {
+  animation: fadeInUp 0.6s 0.1s both;
+}
+
+.feature-card:nth-child(2) {
+  animation: fadeInUp 0.6s 0.3s both;
+}
+
+.feature-card:nth-child(3) {
+  animation: fadeInUp 0.6s 0.5s both;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .contact-banner {
+    padding: 2rem;
+  }
+
+  .contact-banner h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 2rem 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .user-info {
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .user-info::before {
+    left: 50%;
+    top: -15px;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 4px;
+  }
+
+  .contact-banner h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Additional animations */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.container:hover {
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+
+
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="user-info">
+                <div class="user-name" th:if="${#authentication != null and #authentication.principal != null}" 
+                     th:text="${#authentication.principal.attributes != null ? #authentication.principal.attributes.name : 'User'}">
+                    User
+                </div>
+                <div class="user-name" th:unless="${#authentication != null and #authentication.principal != null}">
+                    Guest
+                </div>
+            </div>
+            <a href="/logout" class="logout-button">Logout</a>
+        </div>
+
+        <div class="main-content">
+            <h1>Welcome to Contact Manager</h1>
+            <p>Your personal contact management solution</p>
+
+            <a class="contact-banner">
+                <h2>Effortless Contact Management</h2>
+                <p>Stay organized and keep all your important connections in one secure place. Easily add, edit, and manage your contacts with just a few clicks.</p>
+                <p>Need assistance? We're here to help! Reach out anytime.</p>
+                <a href="/contacts/contacts-ui" span class="contact-button">Open Contacts</span></a>
+            </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
